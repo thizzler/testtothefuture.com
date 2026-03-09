@@ -4,389 +4,327 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Test to the Future — QE Boy</title>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- KEYBOARD HINT -->
-<div class="keyboard-hint">
-  ↑↓ NAVIGATE · → SELECT · ← BACK<br>
-  ENTER=A · ESC=B · P=PAUSE · TAB=SECRET
-</div>
+<!-- ============================================================
+     HOMEPAGE — centered gameboy
+     ============================================================ -->
+<div id="homepage" class="homepage">
 
-<div class="scene">
-
-  <!-- THE GAME BOY -->
-  <div class="gameboy" id="gameboy">
-
-    <!-- LOGO -->
-    <div class="gb-logo-bar">
-      <div class="gb-brand">
-        <div>★ QE BOY ★</div>
-        <div class="model">TEST TO THE FUTURE</div>
-      </div>
-      <div class="power-group">
-        POWER
-        <div class="power-led" id="powerLed"></div>
-      </div>
-    </div>
-
-    <!-- SCREEN -->
-    <div class="screen-housing">
-      <div class="screen-inner">
-        <div class="gb-screen" id="gbScreen">
-
-          <!-- MAIN MENU -->
-          <div class="screen-content" id="screenMenu">
-            <div class="sc-title">
-              <span class="main">TEST TO THE FUTURE</span>
-              <span class="sub">Tyler Hill · v5.0 · QE Boy</span>
-            </div>
-
-            <div class="sc-menu" id="mainMenu">
-              <div class="sc-menu-item selected" data-index="0" data-target="about">
-                <span class="cursor-arrow">▶</span>
-                <span>ABOUT</span>
-                <span class="item-hint">A SELECT</span>
-              </div>
-              <div class="sc-menu-item" data-index="1" data-target="skills">
-                <span class="cursor-arrow">▶</span>
-                <span>SKILLS</span>
-                <span class="item-hint">A SELECT</span>
-              </div>
-              <div class="sc-menu-item" data-index="2" data-target="writing">
-                <span class="cursor-arrow">▶</span>
-                <span>WRITING</span>
-                <span class="item-hint">A SELECT</span>
-              </div>
-              <div class="sc-menu-item" data-index="3" data-target="contact">
-                <span class="cursor-arrow">▶</span>
-                <span>CONTACT</span>
-                <span class="item-hint">A SELECT</span>
-              </div>
-            </div>
-
-            <div class="sc-status">
-              <span>↑↓ NAVIGATE</span>
-              <span>A: SELECT</span>
-            </div>
-          </div>
-
-          <!-- PAUSE OVERLAY -->
-          <div class="pause-overlay" id="pauseOverlay">
-            <div class="pause-title">⏸ GAME PAUSED</div>
-            <div class="pause-sub">
-              you paused a portfolio.<br>
-              bold move.<br>
-              <br>
-              press START to resume<br>
-              pretending to be busy
-            </div>
-          </div>
-
-          <!-- SELECT / EASTER EGG -->
-          <div class="select-overlay" id="selectOverlay">
-            <div class="select-title">✦ SECRET MENU ✦</div>
-            <div class="select-body">
-              CHEAT CODES ENABLED:<br>
-              <br>
-              ↑↑↓↓←→←→BA<br>
-              = +30 YEARS EXPERIENCE<br>
-              <br>
-              ↑↑↓↓←→←→BA SELECT<br>
-              = INFINITE COFFEE<br>
-              <br>
-              ACTUALLY: JUST HIRE ME.<br>
-              <br>
-              press B to dismiss<br>
-              (or admit you need<br>
-              a senior sdet)
-            </div>
-          </div>
-
-        </div><!-- /gb-screen -->
-      </div>
-    </div><!-- /screen-housing -->
-
-    <!-- STRIPE -->
-    <div class="gb-stripe"></div>
-
-    <!-- MAIN CONTROLS -->
-    <div class="controls">
-
-      <!-- D-PAD -->
-      <div class="dpad" id="dpad">
-        <div class="dp-btn dp-h" id="dpH">
-          <span class="dp-left-arrow">◀</span>
-          <span class="dp-right-arrow">▶</span>
-        </div>
-        <div class="dp-btn dp-v" id="dpV">
-          <span class="dp-up-arrow">▲</span>
-          <span class="dp-down-arrow">▼</span>
-        </div>
-        <div class="dp-center"></div>
-      </div>
-
-      <!-- SELECT / START -->
-      <div class="center-btns">
-        <div class="small-btn-row">
-          <div class="sm-btn" id="btnSelect" data-label="SELECT"></div>
-          <div class="sm-btn" id="btnStart" data-label="START"></div>
-        </div>
-      </div>
-
-      <!-- A/B -->
-      <div class="ab-group">
-        <div class="btn-circle btn-b" id="btnB">
-          B
-          <span class="btn-label-under">BACK</span>
-        </div>
-        <div class="btn-circle btn-a" id="btnA">
-          A
-          <span class="btn-label-under">SELECT</span>
-        </div>
-      </div>
-
-    </div><!-- /controls -->
-
-    <!-- SPEAKER -->
-    <div class="speaker-area">
-      <div class="speaker-grid" id="speaker">
-        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-      </div>
-    </div>
-
-  </div><!-- /gameboy -->
-
-
-  <!-- SECTION VIEWS -->
-
-  <!-- ABOUT -->
-  <div class="section-view" id="view-about">
-    <div class="sv-header">
-      <div class="sv-back-btn" onclick="closeSection()">◀ BACK</div>
-      <div class="sv-title">PLAYER PROFILE</div>
-      <div class="sv-breadcrumb">MENU → ABOUT</div>
-    </div>
-    <div class="sv-body">
-      <div class="about-pixel-art">
-
-        <div class="pixel-portrait">
-          <div class="pixel-face">
-            <div class="pixel-hair"></div>
-            <div class="pixel-head">
-              <div class="pixel-eyes">
-                <div class="pixel-eye"></div>
-                <div class="pixel-eye"></div>
-              </div>
-              <div class="pixel-mouth"></div>
-            </div>
-            <div class="pixel-body"></div>
-          </div>
-        </div>
-
-        <div class="about-text-block">
-          <div class="about-name">TYLER HILL</div>
-          <div class="about-role">Senior SDET · Fieldwire</div>
-
-          <div class="about-stats">
-            <div class="stat-box">
-              <div class="stat-label">CLASS</div>
-              <div class="stat-value">SDET LVL 5</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">LOCATION</div>
-              <div class="stat-value">Boise, ID</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">iOS EXP</div>
-              <div class="stat-value">5+ YEARS</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">GUILD</div>
-              <div class="stat-value">Fieldwire</div>
-            </div>
-          </div>
-
-          <div class="about-bio">
-            I build <strong>AI-assisted testing workflows</strong> for mobile
-            and beyond. Feed a <strong>.xcresult bundle</strong> to GitHub
-            Copilot — get root cause, PR draft, and fix path back.
-            No log archaeology. No overnight debugging sessions.
-            Just answers, fast.
-          </div>
-        </div>
-
-      </div>
-
-      <div class="xp-bars" style="margin-top: 28px;">
-        <div style="font-family:'Press Start 2P',monospace; font-size:7px; color:#8bac0f; margin-bottom:14px; letter-spacing:.06em;">EXPERIENCE BARS</div>
-        <div class="xp-bar-row">
-          <div class="xp-bar-label"><span>iOS Automation</span><span>98 / 100</span></div>
-          <div class="xp-track"><div class="xp-fill" style="width:98%"></div></div>
-        </div>
-        <div class="xp-bar-row">
-          <div class="xp-bar-label"><span>AI-Assisted Testing</span><span>94 / 100</span></div>
-          <div class="xp-track"><div class="xp-fill" style="width:94%"></div></div>
-        </div>
-        <div class="xp-bar-row">
-          <div class="xp-bar-label"><span>CI/CD Pipelines</span><span>88 / 100</span></div>
-          <div class="xp-track"><div class="xp-fill" style="width:88%"></div></div>
-        </div>
-        <div class="xp-bar-row">
-          <div class="xp-bar-label"><span>iOS Architecture</span><span>90 / 100</span></div>
-          <div class="xp-track"><div class="xp-fill" style="width:90%"></div></div>
-        </div>
-        <div class="xp-bar-row">
-          <div class="xp-bar-label"><span>Avoiding On-Call Pages</span><span>76 / 100</span></div>
-          <div class="xp-track"><div class="xp-fill" style="width:76%"></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="sv-nav-bar">
-      <span class="hint"><span>B</span> / ESC — Back to menu</span>
-      <span class="hint"><span>↑↓</span> — Scroll</span>
-    </div>
+  <div class="keyboard-hint">
+    ↑↓ NAVIGATE · → SELECT · ← BACK<br>
+    ENTER=A · ESC=B · P=PAUSE · TAB=SECRET
   </div>
 
-  <!-- SKILLS -->
-  <div class="section-view" id="view-skills">
-    <div class="sv-header">
-      <div class="sv-back-btn" onclick="closeSection()">◀ BACK</div>
-      <div class="sv-title">SKILL TREE</div>
-      <div class="sv-breadcrumb">MENU → SKILLS</div>
+  <div class="scene">
+    <div class="gameboy" id="gameboy">
+
+      <div class="gb-logo-bar">
+        <div class="gb-brand">
+          <div>★ QE BOY ★</div>
+          <div class="model">TEST TO THE FUTURE</div>
+        </div>
+        <div class="power-group">
+          POWER
+          <div class="power-led" id="powerLed"></div>
+        </div>
+      </div>
+
+      <div class="screen-housing">
+        <div class="screen-inner">
+          <div class="gb-screen" id="gbScreen">
+
+            <div class="screen-content" id="screenMenu">
+              <div class="sc-title">
+                <span class="main">TEST TO THE FUTURE</span>
+                <span class="sub">Tyler Hill · v5.0 · QE Boy</span>
+              </div>
+              <div class="sc-menu" id="mainMenu">
+                <div class="sc-menu-item selected" data-index="0" data-target="about">
+                  <span class="cursor-arrow">▶</span>
+                  <span>ABOUT</span>
+                  <span class="item-hint">A SELECT</span>
+                </div>
+                <div class="sc-menu-item" data-index="1" data-target="skills">
+                  <span class="cursor-arrow">▶</span>
+                  <span>SKILLS</span>
+                  <span class="item-hint">A SELECT</span>
+                </div>
+                <div class="sc-menu-item" data-index="2" data-target="writing">
+                  <span class="cursor-arrow">▶</span>
+                  <span>WRITING</span>
+                  <span class="item-hint">A SELECT</span>
+                </div>
+                <div class="sc-menu-item" data-index="3" data-target="contact">
+                  <span class="cursor-arrow">▶</span>
+                  <span>CONTACT</span>
+                  <span class="item-hint">A SELECT</span>
+                </div>
+              </div>
+              <div class="sc-status">
+                <span>↑↓ NAVIGATE</span>
+                <span>A: SELECT</span>
+              </div>
+            </div>
+
+            <div class="pause-overlay" id="pauseOverlay">
+              <div class="pause-title">⏸ GAME PAUSED</div>
+              <div class="pause-sub">
+                you paused a portfolio.<br>bold move.<br><br>
+                press START to resume<br>pretending to be busy
+              </div>
+            </div>
+
+            <div class="select-overlay" id="selectOverlay">
+              <div class="select-title">✦ SECRET MENU ✦</div>
+              <div class="select-body">
+                CHEAT CODES ENABLED:<br><br>
+                ↑↑↓↓←→←→BA<br>= +30 YEARS EXPERIENCE<br><br>
+                ↑↑↓↓←→←→BA SELECT<br>= INFINITE COFFEE<br><br>
+                ACTUALLY: JUST HIRE ME.<br><br>
+                press B to dismiss<br>(or admit you need<br>a senior sdet)
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="gb-stripe"></div>
+
+      <div class="controls">
+        <div class="dpad" id="dpad">
+          <div class="dp-btn dp-h" id="dpH">
+            <span class="dp-left-arrow">◀</span>
+            <span class="dp-right-arrow">▶</span>
+          </div>
+          <div class="dp-btn dp-v" id="dpV">
+            <span class="dp-up-arrow">▲</span>
+            <span class="dp-down-arrow">▼</span>
+          </div>
+          <div class="dp-center"></div>
+        </div>
+        <div class="center-btns">
+          <div class="small-btn-row">
+            <div class="sm-btn" id="btnSelect" data-label="SELECT"></div>
+            <div class="sm-btn" id="btnStart" data-label="START"></div>
+          </div>
+        </div>
+        <div class="ab-group">
+          <div class="btn-circle btn-b" id="btnB">B<span class="btn-label-under">BACK</span></div>
+          <div class="btn-circle btn-a" id="btnA">A<span class="btn-label-under">SELECT</span></div>
+        </div>
+      </div>
+
+      <div class="speaker-area">
+        <div class="speaker-grid">
+          <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
+          <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
+          <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
+          <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
+        </div>
+      </div>
+
+    </div><!-- /gameboy -->
+  </div><!-- /scene -->
+</div><!-- /homepage -->
+
+
+<!-- ============================================================
+     SECTION LAYOUT — sidebar + content
+     ============================================================ -->
+<div id="sectionLayout" class="section-layout">
+
+  <!-- SIDEBAR -->
+  <div class="gb-sidebar">
+    <div class="sidebar-logo">★ QE BOY ★</div>
+
+    <div class="sidebar-screen">
+      <div class="ss-inner">
+        <div class="ss-label">NOW PLAYING</div>
+        <div class="ss-section" id="ssSection">ABOUT</div>
+        <div class="ss-sub" id="ssSub">Player Profile</div>
+      </div>
     </div>
-    <div class="sv-body">
+
+    <nav class="sidebar-nav" id="sidebarNav">
+      <div class="snav-item active" data-target="about">▶ ABOUT</div>
+      <div class="snav-item" data-target="skills">SKILLS</div>
+      <div class="snav-item" data-target="writing">WRITING</div>
+      <div class="snav-item" data-target="contact">CONTACT</div>
+    </nav>
+
+    <div class="sidebar-deco">
+      <div class="mini-dpad">
+        <div class="mdp-h"></div>
+        <div class="mdp-v"></div>
+      </div>
+      <div class="mini-ab">
+        <div class="mab-b">B</div>
+        <div class="mab-a">A</div>
+      </div>
+    </div>
+
+    <div class="sidebar-back" id="sidebarBackBtn">◀ BACK TO MENU</div>
+    <div class="sidebar-hint">B / ESC — return to menu</div>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <div class="content-area" id="contentArea">
+
+    <!-- ABOUT -->
+    <div class="section-page" id="section-about">
+      <div class="sp-header">
+        <div class="sp-title">Player Profile</div>
+        <div class="sp-breadcrumb">MENU → ABOUT</div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="ac-avatar">◉</div>
+          <div class="ac-name">TYLER HILL</div>
+          <div class="ac-role">Sr. SDET</div>
+          <div class="ac-stats">
+            <div class="ac-stat"><span>CLASS</span><span>SDET LVL 5</span></div>
+            <div class="ac-stat"><span>BASE</span><span>Boise, ID</span></div>
+            <div class="ac-stat"><span>iOS EXP</span><span>5+ Years</span></div>
+            <div class="ac-stat"><span>GUILD</span><span>Fieldwire</span></div>
+            <div class="ac-stat"><span>STATUS</span><span>🟢 Active</span></div>
+          </div>
+        </div>
+
+        <div class="about-body">
+          <p class="about-bio">
+            I build <strong>AI-assisted testing workflows</strong> for mobile and beyond.
+            Feed a <strong>.xcresult bundle</strong> to GitHub Copilot — get root cause,
+            PR draft, and fix path back. No log archaeology. No overnight debugging sessions.
+            Just answers, fast.
+          </p>
+          <p class="about-bio">
+            Senior SDET at Fieldwire, focused on iOS automation, CI/CD infrastructure,
+            and making test failures actually useful.
+          </p>
+
+          <div class="sp-section-label">Experience</div>
+          <div class="xp-row"><div class="xp-label"><span>iOS Automation</span><span>98%</span></div><div class="xp-track"><div class="xp-fill" style="width:98%"></div></div></div>
+          <div class="xp-row"><div class="xp-label"><span>AI-Assisted Testing</span><span>94%</span></div><div class="xp-track"><div class="xp-fill" style="width:94%"></div></div></div>
+          <div class="xp-row"><div class="xp-label"><span>CI/CD Pipelines</span><span>88%</span></div><div class="xp-track"><div class="xp-fill" style="width:88%"></div></div></div>
+          <div class="xp-row"><div class="xp-label"><span>iOS Architecture</span><span>90%</span></div><div class="xp-track"><div class="xp-fill" style="width:90%"></div></div></div>
+          <div class="xp-row"><div class="xp-label"><span>Avoiding On-Call Pages</span><span>76%</span></div><div class="xp-track"><div class="xp-fill" style="width:76%"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="section-page" id="section-skills">
+      <div class="sp-header">
+        <div class="sp-title">Skill Tree</div>
+        <div class="sp-breadcrumb">MENU → SKILLS</div>
+      </div>
 
       <div class="skills-grid">
-        <div class="skill-category" data-num="01">
-          <div class="sc-head">iOS COMBAT</div>
-          <div class="skill-tag-list">
-            <span class="skill-chip hot">Swift</span>
-            <span class="skill-chip hot">XCTest</span>
-            <span class="skill-chip hot">XCUITest</span>
-            <span class="skill-chip">xcresulttool</span>
-            <span class="skill-chip">XcodeBuildMCP</span>
-            <span class="skill-chip">Snapshot Tests</span>
+        <div class="skill-card">
+          <div class="skill-card-title">iOS COMBAT</div>
+          <div class="tag-list">
+            <span class="tag hot">Swift</span><span class="tag hot">XCTest</span>
+            <span class="tag hot">XCUITest</span><span class="tag">xcresulttool</span>
+            <span class="tag">XcodeBuildMCP</span><span class="tag">Snapshot Tests</span>
           </div>
         </div>
-        <div class="skill-category" data-num="02">
-          <div class="sc-head">AI SPELLS</div>
-          <div class="skill-tag-list">
-            <span class="skill-chip hot">GitHub Copilot</span>
-            <span class="skill-chip hot">MCP Servers</span>
-            <span class="skill-chip">LLM Pipelines</span>
-            <span class="skill-chip">Prompt Eng.</span>
-            <span class="skill-chip">AI Diagnosis</span>
+        <div class="skill-card">
+          <div class="skill-card-title">AI SPELLS</div>
+          <div class="tag-list">
+            <span class="tag hot">GitHub Copilot</span><span class="tag hot">MCP Servers</span>
+            <span class="tag">LLM Pipelines</span><span class="tag">Prompt Eng.</span>
+            <span class="tag">AI Diagnosis</span>
           </div>
         </div>
-        <div class="skill-category" data-num="03">
-          <div class="sc-head">CI/CD MAGIC</div>
-          <div class="skill-tag-list">
-            <span class="skill-chip hot">GitHub Actions</span>
-            <span class="skill-chip">Bash</span>
-            <span class="skill-chip">xcresult Extract</span>
-            <span class="skill-chip">PR Automation</span>
+        <div class="skill-card">
+          <div class="skill-card-title">CI/CD MAGIC</div>
+          <div class="tag-list">
+            <span class="tag hot">GitHub Actions</span><span class="tag">Bash</span>
+            <span class="tag">xcresult Extract</span><span class="tag">PR Automation</span>
           </div>
         </div>
-        <div class="skill-category" data-num="04">
-          <div class="sc-head">WEB ARTS</div>
-          <div class="skill-tag-list">
-            <span class="skill-chip hot">Cypress</span>
-            <span class="skill-chip">Playwright</span>
-            <span class="skill-chip">Selenium</span>
-            <span class="skill-chip">Nightwatch</span>
+        <div class="skill-card">
+          <div class="skill-card-title">WEB ARTS</div>
+          <div class="tag-list">
+            <span class="tag hot">Cypress</span><span class="tag">Playwright</span>
+            <span class="tag">Selenium</span><span class="tag">Nightwatch</span>
           </div>
         </div>
-        <div class="skill-category" data-num="05">
-          <div class="sc-head">ANDROID LORE</div>
-          <div class="skill-tag-list">
-            <span class="skill-chip hot">Kotlin</span>
-            <span class="skill-chip">Android Studio</span>
-            <span class="skill-chip">Espresso</span>
-            <span class="skill-chip">Android Auto</span>
+        <div class="skill-card">
+          <div class="skill-card-title">ANDROID LORE</div>
+          <div class="tag-list">
+            <span class="tag hot">Kotlin</span><span class="tag">Android Studio</span>
+            <span class="tag">Espresso</span><span class="tag">Android Auto</span>
           </div>
         </div>
-        <div class="skill-category" data-num="06">
-          <div class="sc-head">API ARSENAL</div>
-          <div class="skill-tag-list">
-            <span class="skill-chip hot">Postman</span>
-            <span class="skill-chip">Newman</span>
-            <span class="skill-chip">REST</span>
-            <span class="skill-chip">Python</span>
+        <div class="skill-card">
+          <div class="skill-card-title">API ARSENAL</div>
+          <div class="tag-list">
+            <span class="tag hot">Postman</span><span class="tag">Newman</span>
+            <span class="tag">REST</span><span class="tag">Python</span>
           </div>
         </div>
       </div>
 
-      <div class="skills-detail" style="margin-top: 24px;">
-        <div class="sd-title">POWER LEVELS</div>
-        <div class="hp-row"><div class="hp-name">Swift / XCTest</div><div class="hp-track"><div class="hp-fill hp-green" style="width:98%"></div></div><div class="hp-pct">98</div></div>
-        <div class="hp-row"><div class="hp-name">GitHub Copilot</div><div class="hp-track"><div class="hp-fill hp-teal" style="width:94%"></div></div><div class="hp-pct">94</div></div>
-        <div class="hp-row"><div class="hp-name">MCP Servers</div><div class="hp-track"><div class="hp-fill hp-green" style="width:90%"></div></div><div class="hp-pct">90</div></div>
-        <div class="hp-row"><div class="hp-name">GitHub Actions</div><div class="hp-track"><div class="hp-fill hp-teal" style="width:88%"></div></div><div class="hp-pct">88</div></div>
-        <div class="hp-row"><div class="hp-name">Cypress</div><div class="hp-track"><div class="hp-fill hp-gold" style="width:85%"></div></div><div class="hp-pct">85</div></div>
-        <div class="hp-row"><div class="hp-name">Kotlin / Android</div><div class="hp-track"><div class="hp-fill hp-green" style="width:78%"></div></div><div class="hp-pct">78</div></div>
-        <div class="hp-row"><div class="hp-name">Actually Reading Docs</div><div class="hp-track"><div class="hp-fill hp-gold" style="width:62%"></div></div><div class="hp-pct">62</div></div>
+      <div class="sp-section-label" style="margin-top:32px">Power Levels</div>
+      <div class="power-list">
+        <div class="power-row"><span class="power-name">Swift / XCTest</span><div class="power-track"><div class="power-fill pf-green" style="width:98%"></div></div><span class="power-pct">98</span></div>
+        <div class="power-row"><span class="power-name">GitHub Copilot</span><div class="power-track"><div class="power-fill pf-teal" style="width:94%"></div></div><span class="power-pct">94</span></div>
+        <div class="power-row"><span class="power-name">MCP Servers</span><div class="power-track"><div class="power-fill pf-green" style="width:90%"></div></div><span class="power-pct">90</span></div>
+        <div class="power-row"><span class="power-name">GitHub Actions</span><div class="power-track"><div class="power-fill pf-teal" style="width:88%"></div></div><span class="power-pct">88</span></div>
+        <div class="power-row"><span class="power-name">Cypress</span><div class="power-track"><div class="power-fill pf-gold" style="width:85%"></div></div><span class="power-pct">85</span></div>
+        <div class="power-row"><span class="power-name">Kotlin / Android</span><div class="power-track"><div class="power-fill pf-green" style="width:78%"></div></div><span class="power-pct">78</span></div>
+        <div class="power-row"><span class="power-name">Actually Reading Docs</span><div class="power-track"><div class="power-fill pf-gold" style="width:62%"></div></div><span class="power-pct">62</span></div>
       </div>
     </div>
-    <div class="sv-nav-bar">
-      <span class="hint"><span>B</span> / ESC — Back to menu</span>
-      <span class="hint"><span>↑↓</span> — Scroll</span>
-    </div>
-  </div>
 
-  <!-- WRITING -->
-  <div class="section-view" id="view-writing">
-    <div class="sv-header">
-      <div class="sv-back-btn" onclick="closeSection()">◀ BACK</div>
-      <div class="sv-title">FIELD NOTES</div>
-      <div class="sv-breadcrumb">MENU → WRITING</div>
-    </div>
-    <div class="sv-body">
-      <div class="writing-intro">
-        Things I discovered the hard way,<br>
-        written down so you don't have to.
+    <!-- WRITING -->
+    <div class="section-page" id="section-writing">
+      <div class="sp-header">
+        <div class="sp-title">Field Notes</div>
+        <div class="sp-breadcrumb">MENU → WRITING</div>
       </div>
+
+      <p class="writing-intro">Things I discovered the hard way, written down so you don't have to.</p>
 
       <div class="post-list">
-        <div class="post-card">
+        <div class="post-item">
           <div class="post-num">01</div>
-          <div class="post-content">
-            <span class="post-tag">AI · iOS · COPILOT</span>
+          <div class="post-body">
+            <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">iOS</span><span class="post-tag">COPILOT</span></div>
             <div class="post-title">How I built an AI-powered XCTest failure diagnosis script using GitHub Copilot</div>
             <div class="post-excerpt">xcresulttool extracts failures. Copilot diagnoses. A bash script connects the two. Here's every decision I made building it.</div>
           </div>
           <div class="post-arrow">→</div>
         </div>
-
-        <div class="post-card">
+        <div class="post-item">
           <div class="post-num">02</div>
-          <div class="post-content">
-            <span class="post-tag">ARCHITECTURE · XCUITEST</span>
+          <div class="post-body">
+            <div class="post-tags"><span class="post-tag">ARCHITECTURE</span><span class="post-tag">XCUITEST</span></div>
             <div class="post-title">From monolith to protocol: refactoring a BaseUITest class</div>
             <div class="post-excerpt">The BaseUITest class knew too much. CDPScreenProvider and CDPFlowProvider know just enough. The migration story.</div>
           </div>
           <div class="post-arrow">→</div>
         </div>
-
-        <div class="post-card">
+        <div class="post-item">
           <div class="post-num">03</div>
-          <div class="post-content">
-            <span class="post-tag">CI/CD · SNAPSHOT · CHIPS</span>
+          <div class="post-body">
+            <div class="post-tags"><span class="post-tag">CI/CD</span><span class="post-tag">SNAPSHOT</span><span class="post-tag">CHIPS</span></div>
             <div class="post-title">M1 vs M3 vs M4: snapshot test failures across chip architectures</div>
             <div class="post-excerpt">The same test. Three machines. Three different results. The Confluence doc that finally explained it.</div>
           </div>
           <div class="post-arrow">→</div>
         </div>
-
-        <div class="post-card">
+        <div class="post-item">
           <div class="post-num">04</div>
-          <div class="post-content">
-            <span class="post-tag">MCP · TOOLS · iOS</span>
+          <div class="post-body">
+            <div class="post-tags"><span class="post-tag">MCP</span><span class="post-tag">iOS</span></div>
             <div class="post-title">XcodeBuildMCP: a native alternative to Appium for iOS test diagnosis</div>
             <div class="post-excerpt">Full POC comparison. When it wins, when it doesn't, and why "native" doesn't always mean better.</div>
           </div>
@@ -394,86 +332,58 @@
         </div>
       </div>
     </div>
-    <div class="sv-nav-bar">
-      <span class="hint"><span>B</span> / ESC — Back to menu</span>
-      <span class="hint"><span>↑↓</span> — Scroll</span>
-    </div>
-  </div>
 
-  <!-- CONTACT -->
-  <div class="section-view" id="view-contact">
-    <div class="sv-header">
-      <div class="sv-back-btn" onclick="closeSection()">◀ BACK</div>
-      <div class="sv-title">SEND MESSAGE</div>
-      <div class="sv-breadcrumb">MENU → CONTACT</div>
-    </div>
-    <div class="sv-body">
+    <!-- CONTACT -->
+    <div class="section-page" id="section-contact">
+      <div class="sp-header">
+        <div class="sp-title">Send Message</div>
+        <div class="sp-breadcrumb">MENU → CONTACT</div>
+      </div>
+
       <div class="contact-grid">
-
         <div>
-          <div class="contact-message">
-            Insert coin to continue.<br>
-            (Just kidding — <strong>reach out.</strong><br>
-            No coins required.)
-          </div>
-
+          <p class="contact-message">Insert coin to continue.<br>(Just kidding — <strong>reach out.</strong> No coins required.)</p>
           <div class="contact-links">
             <a href="https://github.com/thizzler" target="_blank" class="contact-link">
               <span class="cl-icon">[GH]</span>
-              <div class="cl-text">
-                <span class="cl-label">GITHUB</span>
-                <span class="cl-sub">github.com/thizzler</span>
-              </div>
+              <div class="cl-text"><span class="cl-label">GITHUB</span><span class="cl-sub">github.com/thizzler</span></div>
               <span class="cl-arrow">↗</span>
             </a>
-
             <a href="https://www.linkedin.com/in/tylermhill" target="_blank" class="contact-link">
               <span class="cl-icon">[LI]</span>
-              <div class="cl-text">
-                <span class="cl-label">LINKEDIN</span>
-                <span class="cl-sub">linkedin.com/in/tylermhill</span>
-              </div>
+              <div class="cl-text"><span class="cl-label">LINKEDIN</span><span class="cl-sub">linkedin.com/in/tylermhill</span></div>
               <span class="cl-arrow">↗</span>
             </a>
-
             <a href="mailto:tyler@testtothefuture.com" class="contact-link">
               <span class="cl-icon">[@]</span>
-              <div class="cl-text">
-                <span class="cl-label">EMAIL</span>
-                <span class="cl-sub">tyler@testtothefuture.com</span>
-              </div>
+              <div class="cl-text"><span class="cl-label">EMAIL</span><span class="cl-sub">tyler@testtothefuture.com</span></div>
               <span class="cl-arrow">↗</span>
             </a>
           </div>
         </div>
 
-        <div class="contact-right">
-          <div class="cv-box">
-            <div class="cv-title">OPERATOR DOSSIER</div>
-            <div class="cv-fact"><span class="cv-key">Name</span><span class="cv-val">Tyler Hill</span></div>
-            <div class="cv-fact"><span class="cv-key">Role</span><span class="cv-val">Sr. SDET</span></div>
-            <div class="cv-fact"><span class="cv-key">Company</span><span class="cv-val">Fieldwire</span></div>
-            <div class="cv-fact"><span class="cv-key">Base</span><span class="cv-val">Boise, Idaho</span></div>
-            <div class="cv-fact"><span class="cv-key">iOS Exp</span><span class="cv-val">5+ Years</span></div>
-            <div class="cv-fact"><span class="cv-key">Status</span><span class="cv-val">🟢 Active</span></div>
+        <div>
+          <div class="dossier-box">
+            <div class="dossier-title">OPERATOR DOSSIER</div>
+            <div class="dossier-row"><span>Name</span><span>Tyler Hill</span></div>
+            <div class="dossier-row"><span>Role</span><span>Sr. SDET</span></div>
+            <div class="dossier-row"><span>Company</span><span>Fieldwire</span></div>
+            <div class="dossier-row"><span>Base</span><span>Boise, Idaho</span></div>
+            <div class="dossier-row"><span>iOS Exp</span><span>5+ Years</span></div>
+            <div class="dossier-row"><span>Status</span><span>🟢 Active</span></div>
           </div>
-
-          <div class="cv-box">
-            <div class="cv-title">CURRENTLY PLAYING</div>
-            <div class="cv-fact"><span class="cv-key">Company</span><span class="cv-val">Fieldwire</span></div>
-            <div class="cv-fact"><span class="cv-key">Quest</span><span class="cv-val">AI Test Infra</span></div>
-            <div class="cv-fact"><span class="cv-key">Side Quest</span><span class="cv-val">This website</span></div>
+          <div class="dossier-box">
+            <div class="dossier-title">CURRENTLY PLAYING</div>
+            <div class="dossier-row"><span>Company</span><span>Fieldwire</span></div>
+            <div class="dossier-row"><span>Quest</span><span>AI Test Infra</span></div>
+            <div class="dossier-row"><span>Side Quest</span><span>This website</span></div>
           </div>
         </div>
-
       </div>
     </div>
-    <div class="sv-nav-bar">
-      <span class="hint"><span>B</span> / ESC — Back to menu</span>
-    </div>
-  </div>
 
-</div><!-- /scene -->
+  </div><!-- /content-area -->
+</div><!-- /section-layout -->
 
 <script src="script.js"></script>
 </body>

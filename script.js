@@ -5,11 +5,19 @@ let selectedIndex = 0;
 let currentSection = null;
 let isPaused = false;
 let isSelectOpen = false;
+
 const menuItems = document.querySelectorAll('.sc-menu-item');
 const totalItems = menuItems.length;
 
+const sectionMeta = {
+  about:   { screen: 'ABOUT',   sub: 'Player Profile' },
+  skills:  { screen: 'SKILLS',  sub: 'Skill Tree' },
+  writing: { screen: 'WRITING', sub: 'Field Notes' },
+  contact: { screen: 'CONTACT', sub: 'Send Message' },
+};
+
 /* =============================================
-   RESPONSIVE SCALING
+   RESPONSIVE SCALING (homepage only)
    ============================================= */
 function scaleToFit() {
   const gb = document.getElementById('gameboy');
@@ -22,31 +30,22 @@ function scaleToFit() {
   gb.style.transform = `scale(${scale})`;
 }
 
-window.addEventListener('resize', scaleToFit);
+window.addEventListener('resize', () => { if (!currentSection) scaleToFit(); });
 window.addEventListener('load', scaleToFit);
 
 /* =============================================
-   MENU NAVIGATION
+   MENU NAVIGATION (homepage)
    ============================================= */
 function updateSelection(newIndex) {
   selectedIndex = ((newIndex % totalItems) + totalItems) % totalItems;
-  menuItems.forEach((item, i) => {
-    item.classList.toggle('selected', i === selectedIndex);
-  });
+  menuItems.forEach((item, i) => item.classList.toggle('selected', i === selectedIndex));
   flashScreen();
 }
 
-function navigateUp()    { if (!currentSection) updateSelection(selectedIndex - 1); else scrollSection(-120); }
-function navigateDown()  { if (!currentSection) updateSelection(selectedIndex + 1); else scrollSection(120); }
+function navigateUp()    { if (!currentSection) updateSelection(selectedIndex - 1); }
+function navigateDown()  { if (!currentSection) updateSelection(selectedIndex + 1); }
 function navigateRight() { if (!currentSection) openSection(); }
 function navigateLeft()  { if (currentSection) closeSection(); }
-
-function scrollSection(amount) {
-  const view = document.getElementById('view-' + currentSection);
-  if (!view) return;
-  const body = view.querySelector('.sv-body');
-  if (body) body.scrollBy({ top: amount, behavior: 'smooth' });
-}
 
 /* =============================================
    OPEN / CLOSE SECTION
@@ -55,43 +54,58 @@ function openSection(target) {
   const item = target || menuItems[selectedIndex].dataset.target;
   currentSection = item;
 
-  const gb = document.getElementById('gameboy');
-  const view = document.getElementById('view-' + item);
-  if (!view) return;
+  // Update sidebar mini screen
+  const meta = sectionMeta[item];
+  document.getElementById('ssSection').textContent = meta.screen;
+  document.getElementById('ssSub').textContent = meta.sub;
 
-  const screen = document.getElementById('gbScreen');
-  const screenRect = screen.getBoundingClientRect();
-  const centerX = screenRect.left + screenRect.width / 2;
-  const centerY = screenRect.top + screenRect.height / 2;
-  const originX = (centerX / window.innerWidth * 100).toFixed(1) + '%';
-  const originY = (centerY / window.innerHeight * 100).toFixed(1) + '%';
+  // Update sidebar nav
+  document.querySelectorAll('.snav-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.target === item);
+    el.textContent = (el.dataset.target === item ? '▶ ' : '') + el.dataset.target.toUpperCase();
+  });
 
-  view.style.transformOrigin = originX + ' ' + originY;
+  // Show correct section page
+  document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('section-' + item).classList.add('active');
 
-  gb.classList.add('zooming');
+  // Reset content scroll
+  document.getElementById('contentArea').scrollTop = 0;
 
+  // Transition: hide homepage, show section layout
+  document.getElementById('homepage').classList.add('hidden');
   setTimeout(() => {
-    view.classList.add('open');
-  }, 120);
-
-  pressBtn('btnA');
+    document.getElementById('sectionLayout').classList.add('open');
+  }, 100);
 }
 
 function closeSection() {
   if (!currentSection) return;
+  currentSection = null;
 
-  const view = document.getElementById('view-' + currentSection);
-  const gb = document.getElementById('gameboy');
-
-  view.classList.remove('open');
-
+  document.getElementById('sectionLayout').classList.remove('open');
   setTimeout(() => {
-    gb.classList.remove('zooming');
-    currentSection = null;
+    document.getElementById('homepage').classList.remove('hidden');
     scaleToFit();
-  }, 300);
+  }, 200);
+}
 
-  pressBtn('btnB');
+function switchSection(target) {
+  if (target === currentSection) return;
+  currentSection = target;
+
+  const meta = sectionMeta[target];
+  document.getElementById('ssSection').textContent = meta.screen;
+  document.getElementById('ssSub').textContent = meta.sub;
+
+  document.querySelectorAll('.snav-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.target === target);
+    el.textContent = (el.dataset.target === target ? '▶ ' : '') + el.dataset.target.toUpperCase();
+  });
+
+  document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('section-' + target).classList.add('active');
+  document.getElementById('contentArea').scrollTop = 0;
 }
 
 /* =============================================
@@ -99,8 +113,7 @@ function closeSection() {
    ============================================= */
 function togglePause() {
   isPaused = !isPaused;
-  const overlay = document.getElementById('pauseOverlay');
-  overlay.classList.toggle('visible', isPaused);
+  document.getElementById('pauseOverlay').classList.toggle('visible', isPaused);
   if (isSelectOpen) closeSelect();
   pressBtn('btnStart');
   flashScreen();
@@ -112,9 +125,11 @@ function togglePause() {
 function toggleSelect() {
   if (currentSection) return;
   isSelectOpen = !isSelectOpen;
-  const overlay = document.getElementById('selectOverlay');
-  overlay.classList.toggle('visible', isSelectOpen);
-  if (isPaused) { isPaused = false; document.getElementById('pauseOverlay').classList.remove('visible'); }
+  document.getElementById('selectOverlay').classList.toggle('visible', isSelectOpen);
+  if (isPaused) {
+    isPaused = false;
+    document.getElementById('pauseOverlay').classList.remove('visible');
+  }
   pressBtn('btnSelect');
   flashScreen();
 }
@@ -125,7 +140,7 @@ function closeSelect() {
 }
 
 /* =============================================
-   SCREEN FLASH EFFECT
+   SCREEN FLASH
    ============================================= */
 function flashScreen() {
   const screen = document.getElementById('gbScreen');
@@ -145,43 +160,32 @@ function pressBtn(id) {
 }
 
 function pressDpad(dir) {
-  const dpH = document.getElementById('dpH');
-  const dpV = document.getElementById('dpV');
-  if (dir === 'left' || dir === 'right') {
-    dpH.classList.add('pressed');
-    setTimeout(() => dpH.classList.remove('pressed'), 120);
-  } else {
-    dpV.classList.add('pressed');
-    setTimeout(() => dpV.classList.remove('pressed'), 120);
-  }
+  const id = (dir === 'left' || dir === 'right') ? 'dpH' : 'dpV';
+  const el = document.getElementById(id);
+  el.classList.add('pressed');
+  setTimeout(() => el.classList.remove('pressed'), 120);
 }
 
 /* =============================================
-   KEYBOARD CONTROLS
+   KEYBOARD
    ============================================= */
 document.addEventListener('keydown', (e) => {
   if (e.repeat) return;
 
-  if ((e.key === 'Escape' || e.key === 'b' || e.key === 'B') && isSelectOpen) {
-    closeSelect();
-    return;
-  }
-  if ((e.key === 'Escape' || e.key === 'b' || e.key === 'B') && isPaused) {
-    togglePause();
-    return;
-  }
+  if ((e.key === 'Escape' || e.key === 'b' || e.key === 'B') && isSelectOpen) { closeSelect(); return; }
+  if ((e.key === 'Escape' || e.key === 'b' || e.key === 'B') && isPaused) { togglePause(); return; }
   if (isPaused || isSelectOpen) return;
 
   switch (e.key) {
     case 'ArrowUp':
       e.preventDefault();
-      navigateUp();
-      pressDpad('up');
+      if (currentSection) document.getElementById('contentArea').scrollBy({ top: -120, behavior: 'smooth' });
+      else { navigateUp(); pressDpad('up'); }
       break;
     case 'ArrowDown':
       e.preventDefault();
-      navigateDown();
-      pressDpad('down');
+      if (currentSection) document.getElementById('contentArea').scrollBy({ top: 120, behavior: 'smooth' });
+      else { navigateDown(); pressDpad('down'); }
       break;
     case 'ArrowRight':
       e.preventDefault();
@@ -189,21 +193,15 @@ document.addEventListener('keydown', (e) => {
       break;
     case 'ArrowLeft':
       e.preventDefault();
-      if (currentSection) { navigateLeft(); pressDpad('left'); }
+      if (currentSection) { closeSection(); pressDpad('left'); }
       break;
-    case 'Enter':
-    case 'a':
-    case 'A':
+    case 'Enter': case 'a': case 'A':
       if (!currentSection) openSection();
-      else pressBtn('btnA');
       break;
-    case 'Escape':
-    case 'b':
-    case 'B':
+    case 'Escape': case 'b': case 'B':
       if (currentSection) closeSection();
       break;
-    case 'p':
-    case 'P':
+    case 'p': case 'P':
       if (!currentSection) togglePause();
       break;
     case 'Tab':
@@ -214,7 +212,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* =============================================
-   CLICK/TOUCH CONTROLS FOR DPAD
+   HOMEPAGE CLICK CONTROLS
    ============================================= */
 const dpH = document.getElementById('dpH');
 const dpV = document.getElementById('dpV');
@@ -228,20 +226,19 @@ function getDpadDirection(e, el) {
   return null;
 }
 
-function handleDpadPress(e, el) {
-  const dir = getDpadDirection(e, el);
-  if (!dir) return;
-  if (isPaused || isSelectOpen) return;
-  switch (dir) {
-    case 'up':    navigateUp();    break;
-    case 'down':  navigateDown();  break;
-    case 'left':  navigateLeft();  break;
-    case 'right': navigateRight(); break;
-  }
-}
+dpH.addEventListener('click', (e) => {
+  const dir = getDpadDirection(e, dpH);
+  if (!dir || isPaused || isSelectOpen) return;
+  if (dir === 'left' && currentSection) closeSection();
+  if (dir === 'right' && !currentSection) openSection();
+});
 
-dpH.addEventListener('click', (e) => handleDpadPress(e, dpH));
-dpV.addEventListener('click', (e) => handleDpadPress(e, dpV));
+dpV.addEventListener('click', (e) => {
+  const dir = getDpadDirection(e, dpV);
+  if (!dir || isPaused || isSelectOpen) return;
+  if (dir === 'up') navigateUp();
+  if (dir === 'down') navigateDown();
+});
 
 document.getElementById('btnA').addEventListener('click', () => {
   if (isPaused || isSelectOpen) return;
@@ -258,9 +255,7 @@ document.getElementById('btnStart').addEventListener('click', () => {
   if (!currentSection) togglePause();
 });
 
-document.getElementById('btnSelect').addEventListener('click', () => {
-  toggleSelect();
-});
+document.getElementById('btnSelect').addEventListener('click', () => toggleSelect());
 
 menuItems.forEach((item, i) => {
   item.addEventListener('click', () => {
@@ -268,6 +263,15 @@ menuItems.forEach((item, i) => {
     setTimeout(() => openSection(), 80);
   });
 });
+
+/* =============================================
+   SIDEBAR CONTROLS
+   ============================================= */
+document.querySelectorAll('.snav-item').forEach(el => {
+  el.addEventListener('click', () => switchSection(el.dataset.target));
+});
+
+document.getElementById('sidebarBackBtn').addEventListener('click', closeSection);
 
 /* =============================================
    INIT
