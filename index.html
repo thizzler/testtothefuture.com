@@ -1,390 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Test to the Future — QE Boy</title>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="style.css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tyler Hill — Test to the Future</title>
+<meta name="description" content="Tyler Hill, Software Engineer in Test. Quality engineering, AI-assisted testing, and a complicated relationship with Seattle sports.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#060605;
+    --paper:#EAE8E1;
+    --dim:#8A887F;
+    --line:#2A2A26;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);color:var(--paper);
+    font-family:'IBM Plex Mono',monospace;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--paper);color:var(--void);}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 28px;}
+
+  /* ---- HEADER ---- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:40;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:22px 36px;font-size:12px;letter-spacing:.04em;color:var(--dim);
+    transition:padding .3s ease,background .3s ease;
+  }
+  header.scrolled{
+    padding:14px 36px;
+    background:rgba(6,6,5,.9);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+  }
+  header a{text-decoration:none;}
+
+  .nav-wrap{position:relative;display:flex;align-items:center;}
+  .nav-links{display:flex;gap:22px;align-items:center;transition:opacity .2s ease,visibility .2s ease;}
+  .nav-links a:hover{color:var(--paper);}
+  .nav-resume{color:var(--paper) !important;letter-spacing:.04em;}
+  .nav-resume::after{content:' ↓';font-size:10px;color:var(--dim);}
+
+  header.scrolled .nav-links{opacity:0;visibility:hidden;pointer-events:none;}
+
+  /* ---- HAMBURGER ---- */
+  .hamburger{
+    display:flex;flex-direction:column;gap:5px;cursor:pointer;
+    background:none;border:none;padding:4px;
+    position:absolute;right:0;top:50%;transform:translateY(-50%);
+    opacity:0;pointer-events:none;
+    transition:opacity .25s ease;
+  }
+  .hamburger span{
+    display:block;width:20px;height:1px;background:var(--dim);
+    transition:transform .2s ease,opacity .2s ease;
+  }
+  .hamburger.active span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+  .hamburger.active span:nth-child(2){opacity:0;}
+  .hamburger.active span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+  header.scrolled .hamburger{opacity:1;pointer-events:all;}
+
+  /* ---- DROPDOWN ---- */
+  .nav-dropdown{
+    display:none;position:fixed;top:50px;right:36px;
+    background:var(--void);border:1px solid var(--line);
+    padding:16px 24px;z-index:50;flex-direction:column;gap:14px;
+    font-size:12px;letter-spacing:.04em;color:var(--dim);
+  }
+  .nav-dropdown.open{display:flex;}
+  .nav-dropdown a{text-decoration:none;transition:color .15s ease;}
+  .nav-dropdown a:hover{color:var(--paper);}
+  .nav-dropdown .dd-resume{color:var(--paper);}
+  .nav-dropdown .dd-resume::after{content:' ↓';font-size:10px;color:var(--dim);}
+
+  @media(max-width:768px){
+    .nav-links{display:none;}
+    .hamburger{opacity:1;pointer-events:all;}
+    header.scrolled .hamburger{opacity:1;}
+    .nav-dropdown{
+      top:0;left:0;right:0;bottom:0;position:fixed;
+      justify-content:center;align-items:center;
+      font-size:18px;gap:28px;padding:0;border:none;
+    }
+    .nav-dropdown.open{display:flex;}
+  }
+
+  /* ---- HERO ---- */
+  .hero{
+    min-height:100svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    position:relative;padding:120px 24px 80px;
+  }
+  .iris{
+    width:126px;height:126px;border-radius:50%;
+    background:conic-gradient(from 210deg,#d94f4f,#e0b64f,#6fc47a,#4f9fd9,#9a6fd9,#d94f9c,#d94f4f);
+    filter:saturate(.9) brightness(.92);
+    box-shadow:0 0 90px rgba(160,140,200,.16);
+    margin-bottom:44px;position:relative;will-change:transform;
+  }
+  .iris::after{
+    content:'';position:absolute;inset:0;border-radius:50%;
+    background:
+      radial-gradient(circle at 38% 32%,rgba(255,255,255,.35),transparent 45%),
+      radial-gradient(circle at center,transparent 34%,var(--void) 35%,var(--void) 36%,transparent 37%);
+  }
+  .hero h1{
+    font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+    font-size:clamp(40px,7vw,74px);line-height:1.05;letter-spacing:.005em;
+    cursor:default;will-change:transform,opacity;display:inline-block;
+  }
+  .hero .role{
+    margin-top:18px;font-size:12.5px;letter-spacing:.08em;color:var(--dim);
+    text-transform:uppercase;will-change:transform,opacity;
+  }
+  .scroll-cue{
+    position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+    font-size:11px;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:8px;
+    transition:opacity .4s ease;
+  }
+  .scroll-cue.hidden{opacity:0;}
+  .scroll-cue .stem{width:1px;height:34px;background:var(--dim);animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:.25;}50%{opacity:.9;}}
+  .sc{color:var(--dim);}
+
+  /* ---- SECTIONS ---- */
+  section{
+    padding:96px 0;
+    opacity:0;transform:translateY(28px);
+    transition:opacity .65s ease,transform .65s ease;
+  }
+  section.revealed{opacity:1;transform:translateY(0);}
+  .tag{font-size:11px;letter-spacing:.08em;color:var(--dim);margin-bottom:28px;}
+  .tag::before{content:'— ';}
+  section p{font-size:16px;line-height:1.85;color:#D9D7CF;margin-bottom:22px;max-width:62ch;}
+  section p.lede{
+    font-family:'Instrument Serif',serif;font-style:italic;font-size:23px;
+    color:var(--paper);line-height:1.5;margin-bottom:30px;
+  }
+
+  /* ---- PROFILE PHOTO ---- */
+  .profile-wrap{
+    width:130px;height:130px;border-radius:50%;
+    overflow:hidden;border:1px solid var(--line);
+    float:right;margin:4px 0 24px 36px;flex-shrink:0;
+  }
+  .profile-photo{
+    width:100%;height:100%;
+    object-fit:cover;object-position:center center;display:block;
+    filter:grayscale(15%) contrast(1.05);
+  }
+  .clearfix::after{content:'';display:table;clear:both;}
+
+  /* ---- LOG ---- */
+  .log{display:flex;flex-direction:column;}
+  .log-row{
+    display:grid;grid-template-columns:170px 1fr;gap:20px;
+    padding:16px 0;border-top:1px solid var(--line);font-size:14px;
+    transition:background .15s ease;
+  }
+  .log-row:hover{background:rgba(255,255,255,.02);}
+  .log-row:last-child{border-bottom:1px solid var(--line);}
+  .log-row .field{color:var(--dim);}
+  .log-row .val{color:#D9D7CF;line-height:1.6;}
+  @media(max-width:560px){.log-row{grid-template-columns:1fr;gap:6px;}}
+
+  /* ---- WRITING ---- */
+  .notes-list{display:flex;flex-direction:column;}
+  .note-item{padding:22px 0;border-top:1px solid var(--line);}
+  .note-item:last-child{border-bottom:1px solid var(--line);}
+  .note-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:9px;}
+  .note-tag{
+    font-size:10px;letter-spacing:.06em;color:var(--dim);
+    border:1px solid var(--line);padding:2px 6px;
+  }
+  .note-title{
+    font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+    font-size:20px;color:#5f5d56;margin-bottom:5px;line-height:1.35;
+  }
+  .note-meta{font-size:11px;color:#3a3832;letter-spacing:.04em;}
+
+  /* ---- CONTACT ---- */
+  .contact-links{display:flex;flex-direction:column;margin-top:6px;}
+  .contact-links a{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 0;border-top:1px solid var(--line);text-decoration:none;
+    color:var(--paper);transition:opacity .15s ease;gap:16px;
+  }
+  .contact-links a:last-child{border-bottom:1px solid var(--line);}
+  .contact-links a:hover{opacity:.5;}
+  .contact-label{font-size:11px;letter-spacing:.06em;color:var(--dim);min-width:80px;}
+  .contact-val{font-size:14px;color:#D9D7CF;flex:1;}
+  .contact-arrow{font-size:13px;color:var(--dim);flex-shrink:0;}
+  .contact-resume .contact-label{color:var(--paper);}
+  .contact-resume .contact-val{color:var(--paper);}
+
+  footer{padding:40px 0 60px;font-size:11px;color:#55534c;text-align:center;line-height:1.8;}
+</style>
 </head>
 <body>
 
-<!-- ============================================================
-     HOMEPAGE — centered gameboy
-     ============================================================ -->
-<div id="homepage" class="homepage">
+<header id="siteHeader">
+  <a href="#top">TYLER HILL</a>
+  <div class="nav-wrap">
+  <nav class="nav-links">
+    <a href="#notes">ME</a>
+    <a href="#log">TECH</a>
+    <a href="#writing">WRITING</a>
+    <a href="Tyler_Hill_Resume.pdf" download class="nav-resume">RESUME</a>
+    <a href="#contact">CONTACT</a>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  </div>
+</header>
 
-  <div class="keyboard-hint">
-    ↑↓ NAVIGATE · → SELECT · ← BACK<br>
-    ENTER=A · ESC=B · P=PAUSE · TAB=SECRET
+<div class="nav-dropdown" id="navDropdown">
+  <a href="#notes" class="nav-dd-link">ME</a>
+  <a href="#log" class="nav-dd-link">TECH</a>
+  <a href="#writing" class="nav-dd-link">WRITING</a>
+  <a href="Tyler_Hill_Resume.pdf" download class="nav-dd-link dd-resume">RESUME</a>
+  <a href="#contact" class="nav-dd-link">CONTACT</a>
+</div>
+
+<main id="top">
+
+  <div class="hero" id="hero">
+    <div class="iris" id="iris"></div>
+    <h1 id="heroH1">Tyler Hill</h1>
+    <div class="role" id="heroRole">Software Engineer in Test</div>
+    <div class="scroll-cue" id="scrollCue">
+      <span>SCROLL</span>
+      <span class="stem"></span>
+    </div>
   </div>
 
-  <div class="scene">
-    <div class="gameboy" id="gameboy">
+  <div class="wrap">
 
-      <div class="gb-logo-bar">
-        <div class="gb-brand">
-          <div>★ QE BOY ★</div>
-          <div class="model">TEST TO THE FUTURE</div>
-        </div>
-        <div class="power-group">
-          POWER
-          <div class="power-led" id="powerLed"></div>
-        </div>
+    <section id="notes">
+      <div class="tag">ME</div>
+      <div class="clearfix">
+        <div class="profile-wrap"><img src="me_profile.jpg" alt="Tyler Hill" class="profile-photo"></div>
+        <p class="lede">I write tests for a living. Every once in a while one catches something that would have been a genuinely bad day for someone, and that's the whole job.</p>
+        <p>Got started at Microsoft testing Halo and Gears of War. Testing video games is not nearly as fun as playing them, but I learned a lot, mostly about what happens when you ship software to millions of people who are specifically trying to break it.</p>
+        <p>Since then the work has covered a fair amount of ground. Web UI and cross-browser automation at Smilebox. Hardware and software integration at Precor, where the device under test was sometimes a treadmill. Retail and e-commerce systems at Rhino and lululemon. iOS automation at Fieldwire, which makes construction management software for people working on actual job sites.</p>
+        <p>Wherever I land, the questions are usually the same: what tests should actually be running, when should they run, and does anyone trust the results? The third one is almost always the hardest.</p>
+        <p>Like everyone else right now, I'm trying to figure out what AI can genuinely do in a testing workflow. Some of it is actually useful. Some of it is confident in ways that should probably worry you. I'm still not sure if it'll replace me, kill me, or neither, but I'm paying attention.</p>
+        <p>Outside of work: live theater with my family, pickleball, musical things here and there, and an unwavering loyalty to Seattle sports teams. When the Seahawks lose I'm in a bad mood. I'm working on that.</p>
       </div>
+    </section>
 
-      <div class="screen-housing">
-        <div class="screen-inner">
-          <div class="gb-screen" id="gbScreen">
+    <section id="log">
+      <div class="tag">TECH</div>
+      <div class="log">
+        <div class="log-row"><div class="field">iOS</div><div class="val">Swift, XCTest, XCUITest, xcresulttool, Snapshot Tests, XcodeBuildMCP</div></div>
+        <div class="log-row"><div class="field">Android</div><div class="val">Kotlin, Espresso, Android Studio, Firebase Test Lab</div></div>
+        <div class="log-row"><div class="field">web</div><div class="val">Cypress, Playwright, Selenium, Nightwatch</div></div>
+        <div class="log-row"><div class="field">API</div><div class="val">Postman, Newman, REST</div></div>
+        <div class="log-row"><div class="field">CI / CD</div><div class="val">CircleCI, GitHub Actions, AWS CodeBuild, Firebase Test Lab</div></div>
+        <div class="log-row"><div class="field">languages</div><div class="val">Swift, Kotlin, Ruby, Python, JavaScript, Bash</div></div>
+        <div class="log-row"><div class="field">reporting</div><div class="val">Qase, JUnit XML, Ruby pipelines</div></div>
+        <div class="log-row"><div class="field">AI / agents</div><div class="val">Claude Code, MCP servers, multi-agent pipelines, LLM-assisted diagnosis</div></div>
+        <div class="log-row"><div class="field">experience</div><div class="val">Microsoft, Smilebox, Precor, Rhino, lululemon, Fieldwire — 15+ yrs</div></div>
+      </div>
+    </section>
 
-            <div class="screen-content" id="screenMenu">
-              <div class="sc-title">
-                <span class="main">TEST TO THE FUTURE</span>
-                <span class="sub">Tyler Hill · v5.0 · QE Boy</span>
-              </div>
-              <div class="sc-menu" id="mainMenu">
-                <div class="sc-menu-item selected" data-index="0" data-target="about">
-                  <span class="cursor-arrow">▶</span>
-                  <span>ABOUT</span>
-                  <span class="item-hint">A SELECT</span>
-                </div>
-                <div class="sc-menu-item" data-index="1" data-target="skills">
-                  <span class="cursor-arrow">▶</span>
-                  <span>SKILLS</span>
-                  <span class="item-hint">A SELECT</span>
-                </div>
-                <div class="sc-menu-item" data-index="2" data-target="writing">
-                  <span class="cursor-arrow">▶</span>
-                  <span>WRITING</span>
-                  <span class="item-hint">A SELECT</span>
-                </div>
-                <div class="sc-menu-item" data-index="3" data-target="contact">
-                  <span class="cursor-arrow">▶</span>
-                  <span>CONTACT</span>
-                  <span class="item-hint">A SELECT</span>
-                </div>
-              </div>
-              <div class="sc-status">
-                <span>↑↓ NAVIGATE</span>
-                <span>A: SELECT</span>
-              </div>
-            </div>
-
-            <div class="pause-overlay" id="pauseOverlay">
-              <div class="pause-title">⏸ GAME PAUSED</div>
-              <div class="pause-sub">
-                you paused a portfolio.<br>bold move.<br><br>
-                press START to resume<br>pretending to be busy
-              </div>
-            </div>
-
-            <div class="select-overlay" id="selectOverlay">
-              <div class="select-title">✦ SECRET MENU ✦</div>
-              <div class="select-body">
-                CHEAT CODES ENABLED:<br><br>
-                ↑↑↓↓←→←→BA<br>= +30 YEARS EXPERIENCE<br><br>
-                ↑↑↓↓←→←→BA SELECT<br>= INFINITE COFFEE<br><br>
-                ACTUALLY: JUST HIRE ME.<br><br>
-                press B to dismiss<br>(or admit you need<br>a senior sdet)
-              </div>
-            </div>
-
-          </div>
+    <section id="writing">
+      <div class="tag">WRITING</div>
+      <p class="lede">Nothing published yet. These are drafted and will show up here.</p>
+      <div class="notes-list">
+        <div class="note-item">
+          <div class="note-tags"><span class="note-tag">AI</span><span class="note-tag">iOS</span></div>
+          <div class="note-title">How I built an AI-powered XCTest failure diagnosis script</div>
+          <div class="note-meta">DRAFT</div>
+        </div>
+        <div class="note-item">
+          <div class="note-tags"><span class="note-tag">ARCHITECTURE</span><span class="note-tag">XCUITEST</span></div>
+          <div class="note-title">From monolith to protocol: refactoring a BaseUITest class</div>
+          <div class="note-meta">DRAFT</div>
+        </div>
+        <div class="note-item">
+          <div class="note-tags"><span class="note-tag">CI/CD</span><span class="note-tag">SNAPSHOTS</span></div>
+          <div class="note-title">M1 vs M3 vs M4: snapshot test failures across chip architectures</div>
+          <div class="note-meta">DRAFT</div>
+        </div>
+        <div class="note-item">
+          <div class="note-tags"><span class="note-tag">MCP</span><span class="note-tag">iOS</span></div>
+          <div class="note-title">XcodeBuildMCP: a native alternative to Appium for iOS test diagnosis</div>
+          <div class="note-meta">DRAFT</div>
         </div>
       </div>
+    </section>
 
-      <div class="gb-stripe"></div>
-
-      <div class="controls">
-        <div class="dpad" id="dpad">
-          <div class="dp-btn dp-h" id="dpH">
-            <span class="dp-left-arrow">◀</span>
-            <span class="dp-right-arrow">▶</span>
-          </div>
-          <div class="dp-btn dp-v" id="dpV">
-            <span class="dp-up-arrow">▲</span>
-            <span class="dp-down-arrow">▼</span>
-          </div>
-          <div class="dp-center"></div>
-        </div>
-        <div class="center-btns">
-          <div class="small-btn-row">
-            <div class="sm-btn" id="btnSelect" data-label="SELECT"></div>
-            <div class="sm-btn" id="btnStart" data-label="START"></div>
-          </div>
-        </div>
-        <div class="ab-group">
-          <div class="btn-circle btn-b" id="btnB">B<span class="btn-label-under">BACK</span></div>
-          <div class="btn-circle btn-a" id="btnA">A<span class="btn-label-under">SELECT</span></div>
-        </div>
+    <section id="contact">
+      <div class="tag">CONTACT</div>
+      <div class="contact-links">
+        <a href="Tyler_Hill_Resume.pdf" download class="contact-resume">
+          <span class="contact-label">RESUME</span>
+          <span class="contact-val">Tyler_Hill_Resume.pdf</span>
+          <span class="contact-arrow">↓</span>
+        </a>
+        <a href="https://github.com/thizzler" target="_blank" rel="noopener">
+          <span class="contact-label">GITHUB</span>
+          <span class="contact-val">github.com/thizzler</span>
+          <span class="contact-arrow">↗</span>
+        </a>
+        <a href="https://www.linkedin.com/in/tylermhill" target="_blank" rel="noopener">
+          <span class="contact-label">LINKEDIN</span>
+          <span class="contact-val">linkedin.com/in/tylermhill</span>
+          <span class="contact-arrow">↗</span>
+        </a>
+        <a href="mailto:tylermhill@gmail.com">
+          <span class="contact-label">EMAIL</span>
+          <span class="contact-val">tylermhill@gmail.com</span>
+          <span class="contact-arrow">↗</span>
+        </a>
       </div>
+    </section>
 
-      <div class="speaker-area">
-        <div class="speaker-grid">
-          <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-          <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-          <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-          <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-        </div>
-      </div>
-
-    </div><!-- /gameboy -->
-  </div><!-- /scene -->
-</div><!-- /homepage -->
-
-
-<!-- ============================================================
-     SECTION LAYOUT — sidebar + content
-     ============================================================ -->
-<div id="sectionLayout" class="section-layout">
-
-  <!-- SIDEBAR -->
-  <div class="gb-sidebar">
-    <div class="sidebar-logo">★ QE BOY ★</div>
-
-    <div class="sidebar-screen">
-      <div class="ss-inner">
-        <div class="ss-label">NOW PLAYING</div>
-        <div class="ss-section" id="ssSection">ABOUT</div>
-        <div class="ss-sub" id="ssSub">Player Profile</div>
-      </div>
-    </div>
-
-    <nav class="sidebar-nav" id="sidebarNav">
-      <div class="snav-item active" data-target="about">▶ ABOUT</div>
-      <div class="snav-item" data-target="skills">SKILLS</div>
-      <div class="snav-item" data-target="writing">WRITING</div>
-      <div class="snav-item" data-target="contact">CONTACT</div>
-    </nav>
-
-    <div class="sidebar-deco">
-      <div class="mini-dpad">
-        <div class="mdp-h"></div>
-        <div class="mdp-v"></div>
-      </div>
-      <div class="mini-ab">
-        <div class="mab-b">B</div>
-        <div class="mab-a">A</div>
-      </div>
-    </div>
-
-    <div class="sidebar-back" id="sidebarBackBtn">◀ BACK TO MENU</div>
-    <div class="sidebar-hint">B / ESC — return to menu</div>
   </div>
 
-  <!-- CONTENT AREA -->
-  <div class="content-area" id="contentArea">
+  <footer>
+    TEST TO THE FUTURE · TYLER HILL, IDAHO<br>
+    <span style="opacity:.5">the mariners will be fine</span>
+  </footer>
 
-    <!-- ABOUT -->
-    <div class="section-page" id="section-about">
-      <div class="sp-header">
-        <div class="sp-title">Player Profile</div>
-        <div class="sp-breadcrumb">MENU → ABOUT</div>
-      </div>
+</main>
 
-      <div class="about-grid">
-        <div class="about-card">
-          <div class="ac-avatar">◉</div>
-          <div class="ac-name">TYLER HILL</div>
-          <div class="ac-role">Sr. SDET</div>
-          <div class="ac-stats">
-            <div class="ac-stat"><span>CLASS</span><span>SDET LVL 5</span></div>
-            <div class="ac-stat"><span>BASE</span><span>Boise, ID</span></div>
-            <div class="ac-stat"><span>iOS EXP</span><span>5+ Years</span></div>
-            <div class="ac-stat"><span>GUILD</span><span>Fieldwire</span></div>
-            <div class="ac-stat"><span>STATUS</span><span>🟢 Active</span></div>
-          </div>
-        </div>
+<script>
+  const header    = document.getElementById('siteHeader');
+  const hamburger = document.getElementById('hamburger');
+  const dropdown  = document.getElementById('navDropdown');
+  const iris      = document.getElementById('iris');
+  const heroH1    = document.getElementById('heroH1');
+  const heroRole  = document.getElementById('heroRole');
+  const scrollCue = document.getElementById('scrollCue');
 
-        <div class="about-body">
-          <p class="about-bio">
-            I build <strong>AI-assisted testing workflows</strong> for mobile and beyond.
-            Feed a <strong>.xcresult bundle</strong> to GitHub Copilot — get root cause,
-            PR draft, and fix path back. No log archaeology. No overnight debugging sessions.
-            Just answers, fast.
-          </p>
-          <p class="about-bio">
-            Senior SDET at Fieldwire, focused on iOS automation, CI/CD infrastructure,
-            and making test failures actually useful.
-          </p>
+  /* ---- HAMBURGER ---- */
+  let menuOpen = false;
+  function openMenu()  { menuOpen=true;  hamburger.classList.add('active');    dropdown.classList.add('open'); }
+  function closeMenu() { menuOpen=false; hamburger.classList.remove('active'); dropdown.classList.remove('open'); }
+  hamburger.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
+  document.querySelectorAll('.nav-dd-link').forEach(a => a.addEventListener('click', closeMenu));
+  document.addEventListener('click', e => {
+    if (menuOpen && !hamburger.contains(e.target) && !dropdown.contains(e.target)) closeMenu();
+  });
 
-          <div class="sp-section-label">Experience</div>
-          <div class="xp-row"><div class="xp-label"><span>iOS Automation</span><span>98%</span></div><div class="xp-track"><div class="xp-fill" style="width:98%"></div></div></div>
-          <div class="xp-row"><div class="xp-label"><span>AI-Assisted Testing</span><span>94%</span></div><div class="xp-track"><div class="xp-fill" style="width:94%"></div></div></div>
-          <div class="xp-row"><div class="xp-label"><span>CI/CD Pipelines</span><span>88%</span></div><div class="xp-track"><div class="xp-fill" style="width:88%"></div></div></div>
-          <div class="xp-row"><div class="xp-label"><span>iOS Architecture</span><span>90%</span></div><div class="xp-track"><div class="xp-fill" style="width:90%"></div></div></div>
-          <div class="xp-row"><div class="xp-label"><span>Avoiding On-Call Pages</span><span>76%</span></div><div class="xp-track"><div class="xp-fill" style="width:76%"></div></div></div>
-        </div>
-      </div>
-    </div>
+  /* ---- ORBIT ANIMATION ---- */
+  let h1Dist = 0, roleDist = 0, measured = false;
 
-    <!-- SKILLS -->
-    <div class="section-page" id="section-skills">
-      <div class="sp-header">
-        <div class="sp-title">Skill Tree</div>
-        <div class="sp-breadcrumb">MENU → SKILLS</div>
-      </div>
+  function measureDistances() {
+    const ir  = iris.getBoundingClientRect();
+    const h1r = heroH1.getBoundingClientRect();
+    const ror = heroRole.getBoundingClientRect();
+    const icy = ir.top + ir.height / 2;
+    h1Dist   = (h1r.top  + h1r.height  / 2) - icy;
+    roleDist = (ror.top  + ror.height  / 2) - icy;
+    measured = true;
+  }
 
-      <div class="skills-grid">
-        <div class="skill-card">
-          <div class="skill-card-title">iOS COMBAT</div>
-          <div class="tag-list">
-            <span class="tag hot">Swift</span><span class="tag hot">XCTest</span>
-            <span class="tag hot">XCUITest</span><span class="tag">xcresulttool</span>
-            <span class="tag">XcodeBuildMCP</span><span class="tag">Snapshot Tests</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-card-title">AI SPELLS</div>
-          <div class="tag-list">
-            <span class="tag hot">GitHub Copilot</span><span class="tag hot">MCP Servers</span>
-            <span class="tag">LLM Pipelines</span><span class="tag">Prompt Eng.</span>
-            <span class="tag">AI Diagnosis</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-card-title">CI/CD MAGIC</div>
-          <div class="tag-list">
-            <span class="tag hot">GitHub Actions</span><span class="tag">Bash</span>
-            <span class="tag">xcresult Extract</span><span class="tag">PR Automation</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-card-title">WEB ARTS</div>
-          <div class="tag-list">
-            <span class="tag hot">Cypress</span><span class="tag">Playwright</span>
-            <span class="tag">Selenium</span><span class="tag">Nightwatch</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-card-title">ANDROID LORE</div>
-          <div class="tag-list">
-            <span class="tag hot">Kotlin</span><span class="tag">Android Studio</span>
-            <span class="tag">Espresso</span><span class="tag">Android Auto</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-card-title">API ARSENAL</div>
-          <div class="tag-list">
-            <span class="tag hot">Postman</span><span class="tag">Newman</span>
-            <span class="tag">REST</span><span class="tag">Python</span>
-          </div>
-        </div>
-      </div>
+  function ease(t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
 
-      <div class="sp-section-label" style="margin-top:32px">Power Levels</div>
-      <div class="power-list">
-        <div class="power-row"><span class="power-name">Swift / XCTest</span><div class="power-track"><div class="power-fill pf-green" style="width:98%"></div></div><span class="power-pct">98</span></div>
-        <div class="power-row"><span class="power-name">GitHub Copilot</span><div class="power-track"><div class="power-fill pf-teal" style="width:94%"></div></div><span class="power-pct">94</span></div>
-        <div class="power-row"><span class="power-name">MCP Servers</span><div class="power-track"><div class="power-fill pf-green" style="width:90%"></div></div><span class="power-pct">90</span></div>
-        <div class="power-row"><span class="power-name">GitHub Actions</span><div class="power-track"><div class="power-fill pf-teal" style="width:88%"></div></div><span class="power-pct">88</span></div>
-        <div class="power-row"><span class="power-name">Cypress</span><div class="power-track"><div class="power-fill pf-gold" style="width:85%"></div></div><span class="power-pct">85</span></div>
-        <div class="power-row"><span class="power-name">Kotlin / Android</span><div class="power-track"><div class="power-fill pf-green" style="width:78%"></div></div><span class="power-pct">78</span></div>
-        <div class="power-row"><span class="power-name">Actually Reading Docs</span><div class="power-track"><div class="power-fill pf-gold" style="width:62%"></div></div><span class="power-pct">62</span></div>
-      </div>
-    </div>
+  function updateHero(sy) {
+    if (!measured) measureDistances();
 
-    <!-- WRITING -->
-    <div class="section-page" id="section-writing">
-      <div class="sp-header">
-        <div class="sp-title">Field Notes</div>
-        <div class="sp-breadcrumb">MENU → WRITING</div>
-      </div>
+    /* animation spans 2.2x viewport height so it feels unhurried */
+    const raw = Math.min(sy / (window.innerHeight * 2.2), 1);
+    const p   = ease(raw);
 
-      <p class="writing-intro">Things I discovered the hard way, written down so you don't have to.</p>
+    /* fade starts at 55% progress, fully gone by 100% */
+    const fade = Math.max(0, 1 - (raw - 0.55) / 0.45);
 
-      <div class="post-list">
-        <div class="post-item">
-          <div class="post-num">01</div>
-          <div class="post-body">
-            <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">iOS</span><span class="post-tag">COPILOT</span></div>
-            <div class="post-title">How I built an AI-powered XCTest failure diagnosis script using GitHub Copilot</div>
-            <div class="post-excerpt">xcresulttool extracts failures. Copilot diagnoses. A bash script connects the two. Here's every decision I made building it.</div>
-          </div>
-          <div class="post-arrow">→</div>
-        </div>
-        <div class="post-item">
-          <div class="post-num">02</div>
-          <div class="post-body">
-            <div class="post-tags"><span class="post-tag">ARCHITECTURE</span><span class="post-tag">XCUITEST</span></div>
-            <div class="post-title">From monolith to protocol: refactoring a BaseUITest class</div>
-            <div class="post-excerpt">The BaseUITest class knew too much. CDPScreenProvider and CDPFlowProvider know just enough. The migration story.</div>
-          </div>
-          <div class="post-arrow">→</div>
-        </div>
-        <div class="post-item">
-          <div class="post-num">03</div>
-          <div class="post-body">
-            <div class="post-tags"><span class="post-tag">CI/CD</span><span class="post-tag">SNAPSHOT</span><span class="post-tag">CHIPS</span></div>
-            <div class="post-title">M1 vs M3 vs M4: snapshot test failures across chip architectures</div>
-            <div class="post-excerpt">The same test. Three machines. Three different results. The Confluence doc that finally explained it.</div>
-          </div>
-          <div class="post-arrow">→</div>
-        </div>
-        <div class="post-item">
-          <div class="post-num">04</div>
-          <div class="post-body">
-            <div class="post-tags"><span class="post-tag">MCP</span><span class="post-tag">iOS</span></div>
-            <div class="post-title">XcodeBuildMCP: a native alternative to Appium for iOS test diagnosis</div>
-            <div class="post-excerpt">Full POC comparison. When it wins, when it doesn't, and why "native" doesn't always mean better.</div>
-          </div>
-          <div class="post-arrow">→</div>
-        </div>
-      </div>
-    </div>
+    iris.style.transform = `rotate(${-p * 360}deg)`;
 
-    <!-- CONTACT -->
-    <div class="section-page" id="section-contact">
-      <div class="sp-header">
-        <div class="sp-title">Send Message</div>
-        <div class="sp-breadcrumb">MENU → CONTACT</div>
-      </div>
+    /* h1 orbits clockwise from bottom */
+    const h1R = h1Dist + p * 40;
+    const h1A = Math.PI / 2 - p * Math.PI * 2;
+    heroH1.style.transform =
+      `translate(${Math.cos(h1A) * h1R}px,${Math.sin(h1A) * h1R - h1Dist}px) rotate(${p * 360}deg)`;
+    heroH1.style.opacity = fade;
 
-      <div class="contact-grid">
-        <div>
-          <p class="contact-message">Insert coin to continue.<br>(Just kidding — <strong>reach out.</strong> No coins required.)</p>
-          <div class="contact-links">
-            <a href="https://github.com/thizzler" target="_blank" class="contact-link">
-              <span class="cl-icon">[GH]</span>
-              <div class="cl-text"><span class="cl-label">GITHUB</span><span class="cl-sub">github.com/thizzler</span></div>
-              <span class="cl-arrow">↗</span>
-            </a>
-            <a href="https://www.linkedin.com/in/tylermhill" target="_blank" class="contact-link">
-              <span class="cl-icon">[LI]</span>
-              <div class="cl-text"><span class="cl-label">LINKEDIN</span><span class="cl-sub">linkedin.com/in/tylermhill</span></div>
-              <span class="cl-arrow">↗</span>
-            </a>
-            <a href="mailto:tyler@testtothefuture.com" class="contact-link">
-              <span class="cl-icon">[@]</span>
-              <div class="cl-text"><span class="cl-label">EMAIL</span><span class="cl-sub">tyler@testtothefuture.com</span></div>
-              <span class="cl-arrow">↗</span>
-            </a>
-          </div>
-        </div>
+    /* role orbits counter-clockwise from bottom */
+    const roR = roleDist + p * 30;
+    const roA = Math.PI / 2 + p * Math.PI * 2;
+    heroRole.style.transform =
+      `translate(${Math.cos(roA) * roR}px,${Math.sin(roA) * roR - roleDist}px) rotate(${-p * 360}deg)`;
+    heroRole.style.opacity = fade;
 
-        <div>
-          <div class="dossier-box">
-            <div class="dossier-title">OPERATOR DOSSIER</div>
-            <div class="dossier-row"><span>Name</span><span>Tyler Hill</span></div>
-            <div class="dossier-row"><span>Role</span><span>Sr. SDET</span></div>
-            <div class="dossier-row"><span>Company</span><span>Fieldwire</span></div>
-            <div class="dossier-row"><span>Base</span><span>Boise, Idaho</span></div>
-            <div class="dossier-row"><span>iOS Exp</span><span>5+ Years</span></div>
-            <div class="dossier-row"><span>Status</span><span>🟢 Active</span></div>
-          </div>
-          <div class="dossier-box">
-            <div class="dossier-title">CURRENTLY PLAYING</div>
-            <div class="dossier-row"><span>Company</span><span>Fieldwire</span></div>
-            <div class="dossier-row"><span>Quest</span><span>AI Test Infra</span></div>
-            <div class="dossier-row"><span>Side Quest</span><span>This website</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    scrollCue.classList.toggle('hidden', sy > 60);
+  }
 
-  </div><!-- /content-area -->
-</div><!-- /section-layout -->
+  /* ---- SCROLL ---- */
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const sy = window.scrollY;
+      updateHero(sy);
+      header.classList.toggle('scrolled', sy > 80);
+      if (sy <= 80 && menuOpen) closeMenu();
+      ticking = false;
+    });
+  }, { passive: true });
 
-<script src="script.js"></script>
+  window.addEventListener('resize', () => { measured = false; });
+
+  /* ---- SECTION REVEAL ---- */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('section').forEach(s => obs.observe(s));
+
+  /* ---- SCRAMBLE on load + hover ---- */
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%';
+  function scrambleIn(el, final, ms) {
+    const steps = 18, interval = ms / steps;
+    let step = 0;
+    const iv = setInterval(() => {
+      if (step >= steps) { el.textContent = final; clearInterval(iv); return; }
+      const reveal = Math.floor((step / steps) * final.length);
+      el.innerHTML = final.split('').map((c, i) => {
+        if (c === ' ') return ' ';
+        return i < reveal ? c : `<span class="sc">${chars[Math.floor(Math.random()*chars.length)]}</span>`;
+      }).join('');
+      step++;
+    }, interval);
+  }
+
+  window.addEventListener('load', () => {
+    measureDistances();
+    updateHero(window.scrollY);
+    scrambleIn(heroH1, 'Tyler Hill', 900);
+  });
+  heroH1.addEventListener('mouseenter', () => scrambleIn(heroH1, 'Tyler Hill', 600));
+</script>
 </body>
 </html>
