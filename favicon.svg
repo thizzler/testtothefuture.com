@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Six 60-degree sectors matching the iris conic-gradient(from 210deg, ...) -->
+  <!-- 210→270° red -->
+  <path d="M50,50 L25,93.3 A50,50,0,0,1,0,50 Z" fill="#d94f4f"/>
+  <!-- 270→330° yellow -->
+  <path d="M50,50 L0,50 A50,50,0,0,1,25,6.7 Z" fill="#e0b64f"/>
+  <!-- 330→30° green -->
+  <path d="M50,50 L25,6.7 A50,50,0,0,1,75,6.7 Z" fill="#6fc47a"/>
+  <!-- 30→90° blue -->
+  <path d="M50,50 L75,6.7 A50,50,0,0,1,100,50 Z" fill="#4f9fd9"/>
+  <!-- 90→150° purple -->
+  <path d="M50,50 L100,50 A50,50,0,0,1,75,93.3 Z" fill="#9a6fd9"/>
+  <!-- 150→210° pink -->
+  <path d="M50,50 L75,93.3 A50,50,0,0,1,25,93.3 Z" fill="#d94f9c"/>
+  <!-- Pupil ring (dark annulus at ~34-36% radius) -->
+  <circle cx="50" cy="50" r="18" fill="#060605"/>
+  <circle cx="50" cy="50" r="15" fill="#101010"/>
+  <!-- Iris highlight (upper-left glare) -->
+  <circle cx="41" cy="37" r="6" fill="rgba(255,255,255,0.28)"/>
+</svg>
